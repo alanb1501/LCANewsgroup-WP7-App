@@ -66,6 +66,8 @@ namespace LCANewsgroup.ViewModels
             }
             else
             {
+                // add dummy data to the model when using a design tool, like blend,
+                // so it's easier to visualize the layout.
                 Posts.Add(new Post()
                 {
                     Author = new User() { FullName = "John Q. Stallion" },
@@ -85,6 +87,8 @@ namespace LCANewsgroup.ViewModels
             XDocument doc = XDocument.Parse(xmlPostData);
 
             //nasty hack for now.
+            //clear out the namespace for each name
+            //to make parsing easier.
             foreach (var e in doc.Root.DescendantsAndSelf())
             {
                 if(e.Name.Namespace  != XNamespace.None)
@@ -125,6 +129,8 @@ namespace LCANewsgroup.ViewModels
             }
 
             //nasty! XD
+            //find all the top level posts
+            //based on postId matching the parent post id
             (from post in allPosts.Values
              where post.ParentId == post.PostId
              select post).ToList().ForEach((a) => { Posts.Add(a); });
