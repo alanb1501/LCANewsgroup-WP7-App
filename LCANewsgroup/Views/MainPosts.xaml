@@ -1,0 +1,36 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:LCANewsgroup_MainPostViewModel="clr-namespace:LCANewsgroup.ViewModels"
+    xmlns:cc="clr-namespace:LCANewsgroup"
+	mc:Ignorable="d"
+	x:Class="LCANewsgroup.MainPosts"
+	d:DesignWidth="480" d:DesignHeight="800">
+    <UserControl.DataContext>
+        <LCANewsgroup_MainPostViewModel:MainPostsViewModel/>
+    </UserControl.DataContext>
+    
+	<UserControl.Resources>
+        <cc:DateToFuzzyStringConvert x:Key="DateTimeConverter"/>
+        <cc:EmptyStringConverter x:Key="EmptyStringConvert"/>
+        <cc:PostDescriptionConverter x:Key="PostDescriptionConverter"/>
+		<DataTemplate x:Key="MainPostItem">
+			<Grid d:DesignWidth="419" d:DesignHeight="88" Width="468" Height="{Binding Path=ActualHeight}">
+                <TextBlock x:Name="Subject" Margin="8,0,64,0" TextWrapping="Wrap" Text="{Binding Path=Subject,Mode=OneWay,Converter={StaticResource EmptyStringConvert}}" VerticalAlignment="Top" FontSize="32" d:LayoutOverrides="VerticalAlignment" Foreground="#FF00B3FF" Height="49"/>
+				<TextBlock x:Name="Author" Margin="8,49,164,0" TextWrapping="Wrap" Text="{Binding Path=Author,Mode=OneWay}" Height="29" VerticalAlignment="Top" FontSize="18.667"/>
+                <TextBlock x:Name="PostDate" Margin="8,80,175,0" TextWrapping="Wrap" Text="{Binding Path=Posted,Converter={StaticResource DateTimeConverter},Mode=OneWay}" FontSize="13.333" Foreground="#FFBEBEBE" Height="21" VerticalAlignment="Top"/>
+                <TextBlock x:Name="PostPreview" Margin="8,111,8,0" TextWrapping="Wrap" Text="{Binding Path=Description,Mode=OneWay,Converter={StaticResource PostDescriptionConverter}}" FontSize="16" Foreground="#FFBEBEBE" Height="{Binding Path=ActualHeight}" VerticalAlignment="Top"/>
+				<Grid HorizontalAlignment="Right" Margin="0,42,23,0" Width="56" Height="49" VerticalAlignment="Top">
+					<Path x:Name="ChatBubblePath" Stretch="Fill" Fill="#FF5C5C5C" Data="F1 M 240.5,73.4999L 588.5,73.4999L 588.5,298.708L 406.814,298.708L 287.5,378.5L 287.835,298.708L 240.5,298.708L 240.5,73.4999 Z " Margin="0,0,0,-0.081" UseLayoutRounding="False"/>
+					<TextBlock TextWrapping="Wrap" Text="{Binding Path=ReplyCount}" Margin="8,0,11,22" d:LayoutOverrides="Height" FontSize="24" TextAlignment="Center"/>
+				</Grid>
+			</Grid>
+		</DataTemplate>
+	</UserControl.Resources>
+
+	<Grid x:Name="LayoutRoot" Background="Transparent">
+		<ListBox x:Name="Posts" Margin="0,0,0,61" ItemTemplate="{StaticResource MainPostItem}" ItemsSource="{Binding Path=Posts}"/>
+	</Grid>
+</UserControl>
